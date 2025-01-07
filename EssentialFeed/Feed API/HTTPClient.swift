@@ -7,6 +7,8 @@
 
 import Foundation
 
+// MARK: - HTTPClientResult
+
 public enum HTTPClientResult {
     case success(Data, HTTPURLResponse)
     case failure(Error)
