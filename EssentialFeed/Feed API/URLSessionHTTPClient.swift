@@ -7,7 +7,7 @@
 
 import Foundation
 
-public class URLSessionHTTPClient {
+public class URLSessionHTTPClient:HTTPClient {
 
     // MARK: Lifecycle
 
