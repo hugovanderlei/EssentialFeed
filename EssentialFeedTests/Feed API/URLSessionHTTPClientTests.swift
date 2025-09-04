@@ -7,37 +7,8 @@
 import EssentialFeed
 import XCTest
 
-// MARK: - URLSessionHTTPClient
 
-class URLSessionHTTPClient {
 
-    // MARK: Lifecycle
-
-    init(session: URLSession = .shared) {
-        self.session = session
-    }
-
-    // MARK: Internal
-
-    struct UnexpectedValuesRepresentation: Error {}
-
-    func get(from url: URL, completion: @escaping (HTTPClientResult) -> Void) {
-        session.dataTask(with: url) { data, response, error in
-            if let error = error {
-                completion(.failure(error))
-            } else if let data, !data.isEmpty, let response = response as? HTTPURLResponse {
-                completion(.success(data, response))
-            } else {
-                completion(.failure(UnexpectedValuesRepresentation()))
-            }
-        }.resume()
-    }
-
-    // MARK: Private
-
-    private let session: URLSession
-
-}
 
 // MARK: - URLSessionHTTPClientTests
 
