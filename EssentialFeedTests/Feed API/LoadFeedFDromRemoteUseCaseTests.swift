@@ -8,7 +8,7 @@
 import EssentialFeed
 import XCTest
 
-class RemoteFeedLoaderTests: XCTestCase {
+class LoadFeedFDromRemoteUseCaseTests: XCTestCase {
 
     // MARK: Internal
 
