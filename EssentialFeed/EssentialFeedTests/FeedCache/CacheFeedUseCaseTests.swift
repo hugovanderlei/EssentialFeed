@@ -23,24 +23,47 @@ class LocalFeedLoader {
     let store: FeedStore
 
     func save(_ items: [FeedItem]?) {
-        store.deleteCachedFeed()
+        store.deleteCachedFeed { [weak self] error in
+            if error == nil {
+                if let items {
+                    self?.store.insert(items)
+                }
+            }
+        }
     }
 }
 
 // MARK: - FeedStore
 
 class FeedStore {
+
+    // MARK: Internal
+
+    typealias DeletionCompletion = (Error?) -> Void
+
     var deleteCahedFeedCallCount = 0
     var insertCallCount = 0
 
-
-    func deleteCachedFeed() {
+    func deleteCachedFeed(completion: @escaping DeletionCompletion) {
         deleteCahedFeedCallCount += 1
+        deletionCompletions.append(completion)
     }
-    
+
     func completeDeletion(with error: Error, at index: Int = 0) {
-        
+        deletionCompletions[index](error)
     }
+
+    func completeDeletionSuccessfully(at index: Int = 0) {
+        deletionCompletions[index](nil)
+    }
+
+    func insert(_ items: [FeedItem]) {
+        insertCallCount += 1
+    }
+
+    // MARK: Private
+
+    private var deletionCompletions = [DeletionCompletion]()
 
 }
 
@@ -62,16 +85,24 @@ class CacheFeedUseCaseTests: XCTestCase {
 
         XCTAssertEqual(store.deleteCahedFeedCallCount, 1)
     }
-    
+
     func test_save_doesNotRequestCacheInsertionOnDeletionError() {
         let items = [uniqueItem(), uniqueItem()]
         let (sut, store) = makeSUT()
         let deletionError = anyNSError()
         sut.save(items)
-        
+
         store.completeDeletion(with: deletionError)
-        
+
         XCTAssertEqual(store.insertCallCount, 0)
+    }
+
+    func test_save_requestsNewCacheInsertionOnSuccessfulDeletion() {
+        let items = [uniqueItem(), uniqueItem()]
+        let (sut, store) = makeSUT()
+        sut.save(items)
+        store.completeDeletionSuccessfully()
+        XCTAssertEqual(store.insertCallCount, 1)
     }
 
     // MARK: Private
@@ -82,7 +113,7 @@ class CacheFeedUseCaseTests: XCTestCase {
         let store = FeedStore()
         let sut = LocalFeedLoader(store: store)
         trackForMemoryLeaks(store, file: file, line: line)
-        trackForMemoryLeaks(sut, file:file, line: line)
+        trackForMemoryLeaks(sut, file: file, line: line)
         return (sut, store)
     }
 
@@ -98,10 +129,9 @@ class CacheFeedUseCaseTests: XCTestCase {
     private func anyURL() -> URL {
         return URL(string: "http://any-url.com")!
     }
-    
+
     private func anyNSError() -> NSError {
         return NSError(domain: "any error", code: 0)
     }
-    
 
 }
