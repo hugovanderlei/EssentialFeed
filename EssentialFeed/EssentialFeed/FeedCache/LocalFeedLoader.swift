@@ -16,9 +16,7 @@ public final class LocalFeedLoader {
         self.currentDate = currentDate
     }
 
-    // MARK: Internal
-
-    let store: FeedStore
+    // MARK: Public
 
     public func save(_ items: [FeedItem], completion: @escaping (Error?) -> Void) {
         store.deleteCachedFeed { [weak self] error in
@@ -30,6 +28,10 @@ public final class LocalFeedLoader {
             }
         }
     }
+
+    // MARK: Internal
+
+    let store: FeedStore
 
     // MARK: Private
 
@@ -43,12 +45,3 @@ public final class LocalFeedLoader {
     }
 
 }
-
-public protocol FeedStore {
-    typealias DeletionCompletion = (Error?) -> Void
-    typealias InsertionCompletion = (Error?) -> Void
-
-    func insert(_ items: [FeedItem], timestamp: Date, completion: @escaping InsertionCompletion)
-    func deleteCachedFeed(completion: @escaping DeletionCompletion)
-}
-
