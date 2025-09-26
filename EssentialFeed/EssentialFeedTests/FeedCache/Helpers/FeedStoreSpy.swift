@@ -22,8 +22,9 @@ public class FeedStoreSpy: FeedStore {
         insertionCompletions.append(completion)
         receivedMessages.append(.insert(feed, timestamp))
     }
-    
-    public func retrieve() {
+
+    public func retrieve(completion: @escaping RetrievalCompletion) {
+        retrievalCompletions.append(completion)
         receivedMessages.append(.retrieve)
     }
 
@@ -43,6 +44,10 @@ public class FeedStoreSpy: FeedStore {
         insertionCompletions[index](nil)
     }
 
+    public func completeRetrieval(with error: Error, at index: Int = 0) {
+        retrievalCompletions[index](error)
+    }
+
     // MARK: Internal
 
     enum ReceivedMessage: Equatable {
@@ -57,5 +62,6 @@ public class FeedStoreSpy: FeedStore {
 
     private var deletionCompletions = [DeletionCompletion]()
     private var insertionCompletions = [InsertionCompletion]()
+    private var retrievalCompletions = [RetrievalCompletion]()
 
 }
