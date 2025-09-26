@@ -154,7 +154,6 @@
 		0844768D21FCB23900439BE9 /* Helpers */ = {
 			isa = PBXGroup;
 			children = (
-				183FB2E02E85CFAA0010D431 /* FeedStoreSpy.swift */,
 				0844768E21FCB24E00439BE9 /* XCTestCase+MemoryLeakTracking.swift */,
 			);
 			path = Helpers;
@@ -200,9 +199,18 @@
 			path = FeedCache;
 			sourceTree = "<group>";
 		};
+		183FB2E32E86CE7A0010D431 /* Helpers */ = {
+			isa = PBXGroup;
+			children = (
+				183FB2E02E85CFAA0010D431 /* FeedStoreSpy.swift */,
+			);
+			path = Helpers;
+			sourceTree = "<group>";
+		};
 		18CF9ADD2E6F6E2B001E37F3 /* FeedCache */ = {
 			isa = PBXGroup;
 			children = (
+				183FB2E32E86CE7A0010D431 /* Helpers */,
 				18CF9ADE2E6F6E3D001E37F3 /* CacheFeedUseCaseTests.swift */,
 				183FB2DE2E85BABC0010D431 /* LoadFeedFromCacheUseCaseTests.swift */,
 			);

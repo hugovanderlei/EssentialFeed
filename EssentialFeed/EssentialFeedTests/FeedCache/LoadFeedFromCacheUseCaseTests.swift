@@ -11,12 +11,15 @@ import XCTest
 
 final class LoadFeedFromCacheUseCaseTests: XCTestCase {
 
+    // MARK: Internal
+
     func test_init_doesNotMessageStoreUponCreation() {
         let (_, store) = makeSUT()
         XCTAssertEqual(store.receivedMessages, [])
     }
 
-    
+    // MARK: Private
+
     private func makeSUT(
         currentDate: @escaping () -> Date = Date.init,
         file: StaticString = #file,
