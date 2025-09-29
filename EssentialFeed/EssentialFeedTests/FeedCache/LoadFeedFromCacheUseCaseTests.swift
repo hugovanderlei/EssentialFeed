@@ -9,6 +9,8 @@
 import EssentialFeed
 import XCTest
 
+// MARK: - LoadFeedFromCacheUseCaseTests
+
 final class LoadFeedFromCacheUseCaseTests: XCTestCase {
 
     // MARK: Internal
@@ -30,7 +32,6 @@ final class LoadFeedFromCacheUseCaseTests: XCTestCase {
 
         expect(sut, toCompleteWith: .failure(retrievalError)) {
             store.completeRetrieval(with: retrievalError)
-
         }
     }
 
@@ -58,7 +59,6 @@ final class LoadFeedFromCacheUseCaseTests: XCTestCase {
                 with: feed.local,
                 timestamp: lessThanSevenDaysOldTimeStamp
             )
-
         }
     }
 
@@ -75,9 +75,10 @@ final class LoadFeedFromCacheUseCaseTests: XCTestCase {
                 with: feed.local,
                 timestamp: moreThanSevenDaysOldTimeStamp
             )
-
         }
     }
+
+    // MARK: Private
 
     private func makeSUT(
         currentDate: @escaping () -> Date = Date.init,
@@ -100,20 +101,18 @@ final class LoadFeedFromCacheUseCaseTests: XCTestCase {
     ) {
         let exp = expectation(description: "Wait for load completion")
         sut.load { receivedResult in
-
             switch (receivedResult, expectedResult) {
-            case (.success(let receivedImages), .success(let expectedImages)):
+            case let (.success(receivedImages), .success(expectedImages)):
                 XCTAssertEqual(receivedImages, expectedImages)
 
-            case (
-                .failure(let receivedError as NSError),
-                .failure(let expectedError as NSError)
+            case let (
+                .failure(receivedError as NSError),
+                .failure(expectedError as NSError)
             ):
                 XCTAssertEqual(receivedError, expectedError)
 
             default:
                 XCTFail("Expected result, got \(receivedResult) instead")
-
             }
 
             exp.fulfill()
@@ -122,7 +121,6 @@ final class LoadFeedFromCacheUseCaseTests: XCTestCase {
         action()
 
         wait(for: [exp], timeout: 1.0)
-
     }
 
     private func anyNSError() -> NSError {
@@ -160,8 +158,8 @@ final class LoadFeedFromCacheUseCaseTests: XCTestCase {
 
 }
 
-extension Date {
-    fileprivate func adding(days: Int) -> Date {
+private extension Date {
+    func adding(days: Int) -> Date {
         return Calendar(identifier: .gregorian).date(
             byAdding: .day,
             value: days,
@@ -169,7 +167,7 @@ extension Date {
         )!
     }
 
-    fileprivate func adding(seconds: TimeInterval) -> Date {
+    func adding(seconds: TimeInterval) -> Date {
         return self + seconds
     }
 }
