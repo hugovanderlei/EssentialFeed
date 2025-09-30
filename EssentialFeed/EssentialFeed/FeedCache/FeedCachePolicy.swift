@@ -8,7 +8,7 @@
 
 import Foundation
 
-struct FeedCachePolicy {
+final class FeedCachePolicy {
 
     // MARK: Lifecycle
 
