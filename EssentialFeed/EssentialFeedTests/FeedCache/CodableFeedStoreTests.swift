@@ -90,6 +90,8 @@ class CodableFeedStore {
 
 final class CodableFeedStoreTests: XCTestCase {
 
+    // MARK: Internal
+
     override func setUp() {
         super.setUp()
 
@@ -171,8 +173,12 @@ final class CodableFeedStoreTests: XCTestCase {
 
         wait(for: [exp], timeout: 1.0)
     }
-    
-    private func makeSUT() -> CodableFeedStore {
-        return CodableFeedStore()
+
+    // MARK: Private
+
+    private func makeSUT(file: StaticString = #file, line: UInt = #line) -> CodableFeedStore {
+        let sut = CodableFeedStore()
+        trackForMemoryLeaks(sut, file: file, line: line)
+        return sut
     }
 }
