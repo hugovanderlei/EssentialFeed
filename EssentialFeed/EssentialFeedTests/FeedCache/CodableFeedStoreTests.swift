@@ -11,7 +11,7 @@ import XCTest
 
 // MARK: - CodableFeedStore
 
-class CodableFeedStore {
+class CodableFeedStore: FeedStore {
 
     // MARK: Lifecycle
 
@@ -49,6 +49,10 @@ class CodableFeedStore {
         } catch {
             completion(error)
         }
+    }
+
+    func deleteCachedFeed(completion: @escaping DeletionCompletion) {
+        completion(nil)
     }
 
     // MARK: Private
@@ -113,6 +117,8 @@ final class CodableFeedStoreTests: XCTestCase {
         undoStoreSideEffects()
     }
 
+    // MARK: Retrieval
+
     func test_retrieve_deliversEmptyOnEmptyCache() {
         let sut = makeSUT()
         expect(sut, toRetrieve: .empty)
@@ -161,6 +167,8 @@ final class CodableFeedStoreTests: XCTestCase {
         expect(sut, toRetrieveTwice: .failure(anyNSError()))
     }
 
+    // MARK: Insertion
+
     func test_insert_overridesPreviouslyIsertedCacheValues() {
         let sut = makeSUT()
 
@@ -182,6 +190,21 @@ final class CodableFeedStoreTests: XCTestCase {
 
         let insertionError = insert((feed, timestamp), to: sut)
         XCTAssertNotNil(insertionError, "Expected cache insertion to fail with an error")
+    }
+
+    // MARK: Deletion
+
+    func test_delete_hasNoSideEffectsOnEmptyCache() {
+        let sut = makeSUT()
+        let exp = expectation(description: "Wait for cache deletion")
+
+        sut.deleteCachedFeed { deletionError in
+            XCTAssertNil(deletionError, "Expected empty cache deletion to succeed")
+            exp.fulfill()
+        }
+        wait(for: [exp], timeout: 1.0)
+
+        expect(sut, toRetrieve: .empty)
     }
 
     // MARK: Private
