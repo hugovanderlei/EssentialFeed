@@ -10,11 +10,72 @@ import Foundation
 
 public class CodableFeedStore: FeedStore {
 
+    // MARK: Nested Types
+
+    // MARK: Private
+
+    private struct Cache: Codable {
+
+        // MARK: Properties
+
+        let feed: [CodableFeedImage]
+        let timestamp: Date
+
+        // MARK: Computed Properties
+
+        var localFeed: [LocalFeedImage] {
+            return feed.map { $0.local }
+        }
+    }
+
+    private struct CodableFeedImage: Codable {
+
+        // MARK: Properties
+
+        // MARK: Private
+
+        private let id: UUID
+        private let description: String?
+        private let location: String?
+        private let url: URL
+
+        // MARK: Computed Properties
+
+        // MARK: Internal
+
+        var local: LocalFeedImage {
+            return LocalFeedImage(
+                id: id,
+                description: description,
+                location: location,
+                url: url
+            )
+        }
+
+        // MARK: Lifecycle
+
+        init(_ image: LocalFeedImage) {
+            id = image.id
+            description = image.description
+            location = image.location
+            url = image.url
+        }
+
+    }
+
+    // MARK: Properties
+
+    private let queue = DispatchQueue(label: "\(CodableFeedStore.self)Queue", qos: .userInitiated)
+
+    private let storeURL: URL
+
     // MARK: Lifecycle
 
     public init(storeURL: URL) {
         self.storeURL = storeURL
     }
+
+    // MARK: Functions
 
     // MARK: Public
 
@@ -68,51 +129,5 @@ public class CodableFeedStore: FeedStore {
             }
         }
     }
-
-    // MARK: Private
-
-    private struct Cache: Codable {
-        let feed: [CodableFeedImage]
-        let timestamp: Date
-
-        var localFeed: [LocalFeedImage] {
-            return feed.map { $0.local }
-        }
-    }
-
-    private struct CodableFeedImage: Codable {
-
-        // MARK: Lifecycle
-
-        init(_ image: LocalFeedImage) {
-            id = image.id
-            description = image.description
-            location = image.location
-            url = image.url
-        }
-
-        // MARK: Internal
-
-        var local: LocalFeedImage {
-            return LocalFeedImage(
-                id: id,
-                description: description,
-                location: location,
-                url: url
-            )
-        }
-
-        // MARK: Private
-
-        private let id: UUID
-        private let description: String?
-        private let location: String?
-        private let url: URL
-
-    }
-
-    private let queue = DispatchQueue(label: "\(CodableFeedStore.self)Queue", qos: .userInitiated)
-
-    private let storeURL: URL
 
 }

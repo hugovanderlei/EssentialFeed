@@ -13,6 +13,8 @@ import XCTest
 
 final class CodableFeedStoreTests: XCTestCase {
 
+    // MARK: Overridden Functions
+
     // MARK: Internal
 
     override func setUp() {
@@ -24,6 +26,8 @@ final class CodableFeedStoreTests: XCTestCase {
         super.tearDown()
         undoStoreSideEffects()
     }
+
+    // MARK: Functions
 
     // MARK: Retrieval
 
@@ -137,7 +141,7 @@ final class CodableFeedStoreTests: XCTestCase {
         let sut = makeSUT()
 
         var completedOperationInOrder = [XCTestExpectation]()
-        
+
         let op1 = expectation(description: "Operation 1")
         sut.insert(uniqueImageFeed().local, timestamp: Date()) { _ in
             completedOperationInOrder.append(op1)
@@ -149,15 +153,15 @@ final class CodableFeedStoreTests: XCTestCase {
             completedOperationInOrder.append(op2)
             op2.fulfill()
         }
-        
+
         let op3 = expectation(description: "Operation 3")
         sut.deleteCachedFeed { _ in
             completedOperationInOrder.append(op3)
             op3.fulfill()
         }
-        
+
         waitForExpectations(timeout: 5.0)
-        
+
         XCTAssertEqual(completedOperationInOrder, [op1, op2, op3], "Expected side-effects to run sereally but operations finished in the wrong order")
     }
 

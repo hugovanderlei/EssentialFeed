@@ -11,6 +11,28 @@ import Foundation
 
 public class FeedStoreSpy: FeedStore {
 
+    // MARK: Nested Types
+
+    // MARK: Internal
+
+    enum ReceivedMessage: Equatable {
+        case deleteCahedFeed
+        case insert([LocalFeedImage], Date)
+        case retrieve
+    }
+
+    // MARK: Properties
+
+    private(set) var receivedMessages = [ReceivedMessage]()
+
+    // MARK: Private
+
+    private var deletionCompletions = [DeletionCompletion]()
+    private var insertionCompletions = [InsertionCompletion]()
+    private var retrievalCompletions = [RetrievalCompletion]()
+
+    // MARK: Functions
+
     // MARK: Public
 
     public func deleteCachedFeed(completion: @escaping DeletionCompletion) {
@@ -47,29 +69,13 @@ public class FeedStoreSpy: FeedStore {
     public func completeRetrieval(with error: Error, at index: Int = 0) {
         retrievalCompletions[index](.failure(error))
     }
-    
+
     public func completeRetrievalWithEmptyCache(at index: Int = 0) {
         retrievalCompletions[index](.empty)
     }
-    
+
     public func completeRetrieval(with feed: [LocalFeedImage], timestamp: Date, at index: Int = 0) {
         retrievalCompletions[index](.found(feed: feed, timestamp: timestamp))
     }
-
-    // MARK: Internal
-
-    enum ReceivedMessage: Equatable {
-        case deleteCahedFeed
-        case insert([LocalFeedImage], Date)
-        case retrieve
-    }
-
-    private(set) var receivedMessages = [ReceivedMessage]()
-
-    // MARK: Private
-
-    private var deletionCompletions = [DeletionCompletion]()
-    private var insertionCompletions = [InsertionCompletion]()
-    private var retrievalCompletions = [RetrievalCompletion]()
 
 }

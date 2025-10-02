@@ -99,7 +99,6 @@ class CacheFeedUseCaseTests: XCTestCase {
         XCTAssertTrue(receivedResults.isEmpty)
     }
 
-
     // MARK: - Helpers
 
     private func makeSUT(

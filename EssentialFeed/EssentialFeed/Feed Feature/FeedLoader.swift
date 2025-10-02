@@ -4,11 +4,15 @@
 
 import Foundation
 
+// MARK: - LoadFeedResult
+
 public enum LoadFeedResult {
-	case success([FeedImage])
-	case failure(Error)
+    case success([FeedImage])
+    case failure(Error)
 }
 
+// MARK: - FeedLoader
+
 public protocol FeedLoader {
-	func load(completion: @escaping (LoadFeedResult) -> Void)
+    func load(completion: @escaping (LoadFeedResult) -> Void)
 }

@@ -7,19 +7,11 @@
 //
 import Foundation
 
-// MARK: - FeedCachePolicy
-
-
 // MARK: - LocalFeedLoader
 
 public final class LocalFeedLoader {
 
-    // MARK: Lifecycle
-
-    public init(store: FeedStore, currentDate: @escaping () -> Date) {
-        self.store = store
-        self.currentDate = currentDate
-    }
+    // MARK: Properties
 
     // MARK: Internal
 
@@ -27,8 +19,14 @@ public final class LocalFeedLoader {
 
     // MARK: Private
 
-
     private let currentDate: () -> Date
+
+    // MARK: Lifecycle
+
+    public init(store: FeedStore, currentDate: @escaping () -> Date) {
+        self.store = store
+        self.currentDate = currentDate
+    }
 
 }
 

@@ -8,12 +8,7 @@ import Foundation
 
 public final class RemoteFeedLoader: FeedLoader {
 
-    // MARK: Lifecycle
-
-    public init(url: URL, client: HTTPClient) {
-        self.url = url
-        self.client = client
-    }
+    // MARK: Nested Types
 
     // MARK: Public
 
@@ -23,6 +18,33 @@ public final class RemoteFeedLoader: FeedLoader {
     }
 
     public typealias Result = LoadFeedResult
+
+    // MARK: Properties
+
+    // MARK: Private
+
+    private let url: URL
+    private let client: HTTPClient
+
+    // MARK: Lifecycle
+
+    public init(url: URL, client: HTTPClient) {
+        self.url = url
+        self.client = client
+    }
+
+    // MARK: Static Functions
+
+    private static func map(_ data: Data, response: HTTPURLResponse) -> Result {
+        do {
+            let items = try FeedItemsMapper.map(data, from: response)
+            return .success(items.toModels())
+        } catch {
+            return .failure(error)
+        }
+    }
+
+    // MARK: Functions
 
     public func load(completion: @escaping (Result) -> Void) {
         client.get(from: url) { [weak self] result in
@@ -34,20 +56,6 @@ public final class RemoteFeedLoader: FeedLoader {
             case .failure:
                 completion(.failure(Error.connectivity))
             }
-        }
-    }
-
-    // MARK: Private
-
-    private let url: URL
-    private let client: HTTPClient
-
-    private static func map(_ data: Data, response: HTTPURLResponse) -> Result {
-        do {
-            let items = try FeedItemsMapper.map(data, from: response)
-            return .success(items.toModels())
-        } catch {
-            return .failure(error)
         }
     }
 

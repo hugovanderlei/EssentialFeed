@@ -6,21 +6,11 @@ import Foundation
 
 // MARK: - Item
 
-
 // MARK: - FeedItemsMapper
 
-internal final class FeedItemsMapper {
+enum FeedItemsMapper {
 
-    // MARK: Internal
-
-    internal static func map(_ data: Data, from response: HTTPURLResponse) throws -> [RemoteFeedItem] {
-        guard response.statusCode == OK_200,
-              let root = try? JSONDecoder().decode(Root.self, from: data) else {
-            throw RemoteFeedLoader.Error.invalidData
-        }
-
-        return root.items
-    }
+    // MARK: Nested Types
 
     // MARK: Private
 
@@ -29,6 +19,21 @@ internal final class FeedItemsMapper {
 
     }
 
+    // MARK: Static Computed Properties
+
     private static var OK_200: Int { return 200 }
+
+    // MARK: Static Functions
+
+    // MARK: Internal
+
+    static func map(_ data: Data, from response: HTTPURLResponse) throws -> [RemoteFeedItem] {
+        guard response.statusCode == OK_200,
+              let root = try? JSONDecoder().decode(Root.self, from: data) else {
+            throw RemoteFeedLoader.Error.invalidData
+        }
+
+        return root.items
+    }
 
 }
