@@ -8,6 +8,8 @@
 
 import CoreData
 
+// MARK: - ManagedFeedImage
+
 @objc(ManagedFeedImage)
 class ManagedFeedImage: NSManagedObject {
 
@@ -30,6 +32,9 @@ class ManagedFeedImage: NSManagedObject {
         )
     }
 
+}
+
+extension ManagedFeedImage {
     // MARK: Static Functions
 
     static func images(from localFeed: [LocalFeedImage], in context: NSManagedObjectContext) -> NSOrderedSet {
@@ -42,5 +47,4 @@ class ManagedFeedImage: NSManagedObject {
             return managed
         })
     }
-
 }

@@ -8,20 +8,16 @@
 
 import CoreData
 
-@objc(ManagedCache)
-internal class ManagedCache: NSManagedObject {
+// MARK: - ManagedCache
 
-    // MARK: Properties
+@objc(ManagedCache)
+class ManagedCache: NSManagedObject {
 
     @NSManaged var timestamp: Date
     @NSManaged var feed: NSOrderedSet
+}
 
-    // MARK: Computed Properties
-
-    var localFeed: [LocalFeedImage] {
-        return feed.compactMap { ($0 as? ManagedFeedImage)?.local }
-    }
-
+extension ManagedCache {
     // MARK: Static Functions
 
     static func find(in context: NSManagedObjectContext) throws -> ManagedCache? {
@@ -34,4 +30,9 @@ internal class ManagedCache: NSManagedObject {
         try find(in: context).map(context.delete)
         return ManagedCache(context: context)
     }
+
+    var localFeed: [LocalFeedImage] {
+        return feed.compactMap { ($0 as? ManagedFeedImage)?.local }
+    }
+
 }
