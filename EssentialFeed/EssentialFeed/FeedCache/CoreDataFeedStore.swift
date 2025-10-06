@@ -16,11 +16,13 @@ public final class CoreDataFeedStore: FeedStore {
     // MARK: Properties
 
     private let container: NSPersistentContainer
+    private let context: NSManagedObjectContext
 
     // MARK: Lifecycle
 
-    public init(bundle: Bundle = .main) {
-        container = try! NSPersistentContainer.load(modelName: "FeedStore", in: bundle)
+    public init(bundle: Bundle = .main) throws {
+        container = try NSPersistentContainer.load(modelName: "FeedStore", in: bundle)
+        context = container.newBackgroundContext()
     }
 
     // MARK: Functions
