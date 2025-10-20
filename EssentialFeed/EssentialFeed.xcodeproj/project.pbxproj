@@ -195,10 +195,10 @@
 				18D5DD0F2EA28B4500F0D19D /* EssentialFeedAPIEndToEndTests.xctestplan */,
 				18176D382E954D95000E2E7A /* EssentialFeedCacheIntegrationTests.xctestplan */,
 				080EDEF321B6DA7E00813479 /* EssentialFeed */,
+				18D5DD162EA28F5400F0D19D /* EssentialFeediOS */,
 				080EDEFE21B6DA7E00813479 /* EssentialFeedTests */,
 				0899395D220359C50031B03D /* EssentialFeedAPIEndToEndTests */,
 				18176D2F2E954D61000E2E7A /* EssentialFeedCacheIntegrationTests */,
-				18D5DD162EA28F5400F0D19D /* EssentialFeediOS */,
 				18D5DD232EA28F5500F0D19D /* EssentialFeediOSTests */,
 				080EDEF221B6DA7E00813479 /* Products */,
 			);
