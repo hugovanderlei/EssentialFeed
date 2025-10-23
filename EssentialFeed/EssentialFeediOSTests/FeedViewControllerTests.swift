@@ -105,6 +105,16 @@ final class FeedViewControllerTests: XCTestCase {
         XCTAssertEqual(loader.loadCallCount, 1)
     }
 
+    func test_userInitiatedFeedReload_reloadsFeed() {
+        let (sut, loader) = makeSUT()
+        sut.simulateAppearance()
+
+        sut.simulateUserInitiatedFeedReload()
+        XCTAssertEqual(loader.loadCallCount, 2)
+
+        sut.simulateUserInitiatedFeedReload()
+        XCTAssertEqual(loader.loadCallCount, 3)
+    }
 
     func test_viewDidLoad_showsLoadingIndicator() {
         let (sut, _) = makeSUT()
@@ -121,15 +131,26 @@ final class FeedViewControllerTests: XCTestCase {
 
         XCTAssertEqual(sut.refreshControl?.isRefreshing, false)
     }
-    
-    func test_pullToRefresh_showsLoadingIndicator() {
+
+    func test_userInitiatedFeedReload_showsLoadingIndicator() {
         let (sut, _) = makeSUT()
-        
+
         sut.simulateAppearance()
-        sut.refreshControl?.simulatePullToRefresh()
+        sut.simulateUserInitiatedFeedReload()
 
         XCTAssertEqual(sut.refreshControl?.isRefreshing, true)
     }
+
+    func test_userInitiatedFeedReload_hidesLoadingIndicatorOnLoaderCompletion() {
+        let (sut, loader) = makeSUT()
+
+        sut.simulateUserInitiatedFeedReload()
+        loader.completeFeedLoading()
+
+        XCTAssertEqual(sut.refreshControl?.isRefreshing, false)
+    }
+
+    // MARK: -  Helpers
 
     private func makeSUT(file: StaticString = #file, line: UInt = #line) -> (sut: FeedViewController, loader: LoaderSpy) {
         let loader = LoaderSpy()
@@ -187,9 +208,15 @@ private class FakeRefreshControl: UIRefreshControl {
     }
 }
 
+private extension FeedViewController {
+    func simulateUserInitiatedFeedReload() {
+        refreshControl?.simulatePullToRefresh()
+    }
+}
+
 private extension UIRefreshControl {
     func simulatePullToRefresh() {
-        allTargets.forEach { target in
+        for target in allTargets {
             actions(forTarget: target, forControlEvent: .valueChanged)?.forEach {
                 (target as NSObject).perform(Selector($0))
             }
