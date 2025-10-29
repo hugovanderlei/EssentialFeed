@@ -66,14 +66,11 @@ final class FeedViewController: UITableViewController {
         refresh()
         loader?.load { [weak self] result in
             guard let self else { return }
-            switch result {
-            case let .success(feed):
+            if let feed = try? result.get() {
                 self.tableModel = feed
                 self.tableView.reloadData()
-                self.refreshControl?.endRefreshing()
-
-            case .failure: break
             }
+            self.refreshControl?.endRefreshing()
         }
     }
 
@@ -139,13 +136,13 @@ final class FeedViewControllerTests: XCTestCase {
         XCTAssertTrue(sut.isShowingLoadingIndicator, "Expected loading indicator once view is loaded")
 
         loader.completeFeedLoading(at: 0)
-        XCTAssertFalse(sut.isShowingLoadingIndicator, "Expected no loading indicator once loading is completed")
+        XCTAssertFalse(sut.isShowingLoadingIndicator, "Expected no loading indicator once loading completes successfully")
 
         sut.simulateUserInitiatedFeedReload()
         XCTAssertTrue(sut.isShowingLoadingIndicator, "Expected loading indicator once user initiates a reload")
 
-        loader.completeFeedLoading(at: 1)
-        XCTAssertFalse(sut.isShowingLoadingIndicator, "Expected no loading indicator once user initiated loading is completed")
+        loader.completeFeedLoadingWithError(at: 1)
+        XCTAssertFalse(sut.isShowingLoadingIndicator, "Expected no loading indicator once user initiated loading completes with error")
     }
 
     func test_loadFeedCompletion_rendersSuccessfullyLoadedFeed() {
