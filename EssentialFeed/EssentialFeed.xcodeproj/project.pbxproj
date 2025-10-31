@@ -168,6 +168,7 @@
 		180ABF8B2EB4FB980022D7BA /* PBXFileSystemSynchronizedBuildFileExceptionSet */ = {
 			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
 			membershipExceptions = (
+				FeedImageCell.swift,
 				"UIView+Shimering.swift",
 			);
 			target = 18D5DD1E2EA28F5500F0D19D /* EssentialFeediOSTests */;
