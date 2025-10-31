@@ -7,11 +7,16 @@ import EssentialFeediOS
 import UIKit
 import XCTest
 
+// MARK: - FeedImageDataLoaderTask
+
+public protocol FeedImageDataLoaderTask {
+    func cancel()
+}
+
 // MARK: - FeedImageDataLoader
 
 public protocol FeedImageDataLoader {
-    func loadImageData(from url: URL)
-    func cancelImageDataLoad(from url: URL)
+    func loadImageData(from url: URL) -> FeedImageDataLoaderTask
 }
 
 // MARK: - FeedViewController
@@ -22,6 +27,7 @@ final class FeedViewController: UITableViewController {
 
     private var viewAppeared = false
     private var tableModel = [FeedImage]()
+    private var tasks = [IndexPath: FeedImageDataLoaderTask]()
 
     private var feedLoader: FeedLoader?
     private var imageLoader: FeedImageDataLoader?
@@ -62,13 +68,14 @@ final class FeedViewController: UITableViewController {
         cell.locationContainer.isHidden = (cellModel.location == nil)
         cell.locationLabel.text = cellModel.location
         cell.descriptionLabel.text = cellModel.description
-        imageLoader?.loadImageData(from: cellModel.url)
+        tasks[indexPath] = imageLoader?.loadImageData(from: cellModel.url)
+
         return cell
     }
 
     override func tableView(_ tableView: UITableView, didEndDisplaying cell: UITableViewCell, forRowAt indexPath: IndexPath) {
-        let cellModel = tableModel[indexPath.row]
-        imageLoader?.cancelImageDataLoad(from: cellModel.url)
+        tasks[indexPath]?.cancel()
+        tasks[indexPath] = nil
     }
 
     // MARK: Functions
@@ -101,6 +108,21 @@ final class FeedViewControllerTests: XCTestCase {
 
     class LoaderSpy: FeedLoader, FeedImageDataLoader {
 
+        // MARK: Nested Types
+
+        private struct TaskSpy: FeedImageDataLoaderTask {
+
+            // MARK: Properties
+
+            let cancelCallback: () -> Void
+
+            // MARK: Functions
+
+            func cancel() {
+                cancelCallback()
+            }
+        }
+
         // MARK: Properties
 
         private(set) var loadedImageURLs = [URL]()
@@ -130,13 +152,10 @@ final class FeedViewControllerTests: XCTestCase {
         }
 
         // MARK: FeedImageDataLoader
-
-        func loadImageData(from url: URL) {
+        @discardableResult
+        func loadImageData(from url: URL) -> FeedImageDataLoaderTask {
             loadedImageURLs.append(url)
-        }
-
-        func cancelImageDataLoad(from url: URL) {
-            cancelledImageURLs.append(url)
+            return TaskSpy { [weak self] in self?.cancelledImageURLs.append(url) }
         }
 
     }
