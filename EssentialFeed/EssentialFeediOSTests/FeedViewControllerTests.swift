@@ -584,12 +584,3 @@ private extension FeedViewController {
 
 
 
-private extension UIButton {
-    func simulateTap() {
-        for target in allTargets {
-            actions(forTarget: target, forControlEvent: .touchUpInside)?.forEach {
-                (target as NSObject).perform(Selector($0))
-            }
-        }
-    }
-}
