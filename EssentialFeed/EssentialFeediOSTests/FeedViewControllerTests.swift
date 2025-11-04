@@ -582,15 +582,7 @@ private extension FeedViewController {
     }
 }
 
-private extension UIRefreshControl {
-    func simulatePullToRefresh() {
-        for target in allTargets {
-            actions(forTarget: target, forControlEvent: .valueChanged)?.forEach {
-                (target as NSObject).perform(Selector($0))
-            }
-        }
-    }
-}
+
 
 private extension UIButton {
     func simulateTap() {
