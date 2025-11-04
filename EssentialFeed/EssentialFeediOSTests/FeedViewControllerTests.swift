@@ -581,6 +581,3 @@ private extension FeedViewController {
         ds?.tableView?(tableView, cancelPrefetchingForRowsAt: [index])
     }
 }
-
-
-
