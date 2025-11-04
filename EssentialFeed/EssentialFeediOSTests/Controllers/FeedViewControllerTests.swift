@@ -11,80 +11,7 @@ import XCTest
 
 final class FeedViewControllerTests: XCTestCase {
 
-    // MARK: Nested Types
-
     // MARK: - Helpers
-
-    class LoaderSpy: FeedLoader, FeedImageDataLoader {
-
-        // MARK: Nested Types
-
-        private struct TaskSpy: FeedImageDataLoaderTask {
-
-            // MARK: Properties
-
-            let cancelCallback: () -> Void
-
-            // MARK: Functions
-
-            func cancel() {
-                cancelCallback()
-            }
-        }
-
-        // MARK: Properties
-
-        private(set) var cancelledImageURLs = [URL]()
-
-        private var imageRequests = [(url: URL, completion: (FeedImageDataLoader.Result) -> Void)]()
-
-        private var feedRequests = [(FeedLoader.Result) -> Void]()
-
-        // MARK: Computed Properties
-
-        var loadedImageURLs: [URL] {
-            return imageRequests.map { $0.url }
-        }
-
-        var loadFeedCallCount: Int {
-            return feedRequests.count
-        }
-
-        // MARK: Functions
-
-        func load(completion: @escaping (FeedLoader.Result) -> Void) {
-            feedRequests.append(completion)
-        }
-
-        func completeFeedLoading(with feed: [FeedImage] = [], at index: Int = 0) {
-            feedRequests[index](.success(feed))
-        }
-
-        func completeFeedLoadingWithError(at index: Int = 0) {
-            let error = NSError(domain: "an error", code: 0)
-            feedRequests[index](.failure(error))
-        }
-
-        func completeImageLoading(with imageData: Data = Data(), at index: Int = 0) {
-            imageRequests[index].completion(.success(imageData))
-        }
-
-        func completeImageLoadingWithError(at index: Int = 0) {
-            let error = NSError(domain: "an error", code: 0)
-            imageRequests[index].completion(.failure(error))
-        }
-
-        // MARK: FeedImageDataLoader
-
-        @discardableResult
-        func loadImageData(from url: URL, completion: @escaping (FeedImageDataLoader.Result) -> Void) -> FeedImageDataLoaderTask {
-            imageRequests.append((url, completion))
-            return TaskSpy { [weak self] in self?.cancelledImageURLs.append(url) }
-        }
-
-    }
-
-    // MARK: Functions
 
     func test_loadFeedActions_requestFeedFromLoader() {
         let (sut, loader) = makeSUT()
@@ -374,4 +301,3 @@ private class FakeRefreshControl: UIRefreshControl {
         _isRefreshing = false
     }
 }
-
