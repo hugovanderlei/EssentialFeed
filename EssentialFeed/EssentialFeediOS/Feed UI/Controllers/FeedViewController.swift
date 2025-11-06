@@ -16,25 +16,32 @@ public final class FeedViewController: UITableViewController, UITableViewDataSou
     // MARK: Properties
 
     private var viewAppeared = false
-    private var tableModel = [FeedImage]()
     private var tasks = [IndexPath: FeedImageDataLoaderTask]()
 
-    private var feedLoader: FeedLoader?
     private var imageLoader: FeedImageDataLoader?
+
+    var refreshController: FeedRefreshViewController?
+    
+    private var tableModel = [FeedImage]() {
+        didSet { tableView.reloadData() }
+    }
 
     // MARK: Lifecycle
 
     override public func viewDidLoad() {
         super.viewDidLoad()
-        refreshControl = UIRefreshControl()
-        refreshControl?.addTarget(self, action: #selector(load), for: .valueChanged)
+        
+        refreshController?.onRefresh = { [weak self] feed in
+            self?.tableModel = feed
+        }
         tableView.prefetchDataSource = self
-        load()
+        refreshControl = refreshController?.view 
+        refreshController?.refresh()
     }
 
     convenience init(feedLoader: FeedLoader, imageLoader: FeedImageDataLoader) {
         self.init()
-        self.feedLoader = feedLoader
+        refreshController = FeedRefreshViewController(feedLoader: feedLoader)
         self.imageLoader = imageLoader
     }
 
@@ -106,16 +113,5 @@ public final class FeedViewController: UITableViewController, UITableViewDataSou
         tasks[indexPath] = nil
     }
 
-    @objc private func load() {
-        refresh()
-        feedLoader?.load { [weak self] result in
-            guard let self else { return }
-            if let feed = try? result.get() {
-                self.tableModel = feed
-                self.tableView.reloadData()
-            }
-            self.refreshControl?.endRefreshing()
-        }
-    }
 
 }
