@@ -6,11 +6,7 @@
 //  Copyright © 2025 Essential Developer. All rights reserved.
 //
 
-import EssentialFeed
 import UIKit
-
-
-
 
 // MARK: - FeedViewController
 
@@ -20,11 +16,11 @@ public final class FeedViewController: UITableViewController, UITableViewDataSou
 
     var refreshController: FeedRefreshViewController?
 
-    private var viewAppeared = false
-
     var tableModel = [FeedImageCellController]() {
         didSet { tableView.reloadData() }
     }
+
+    private var viewAppeared = false
 
     // MARK: Lifecycle
 
