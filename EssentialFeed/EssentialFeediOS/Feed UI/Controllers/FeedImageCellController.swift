@@ -6,59 +6,54 @@
 //  Copyright © 2025 Essential Developer. All rights reserved.
 //
 
-import EssentialFeed
 import UIKit
 
 final class FeedImageCellController {
 
     // MARK: Properties
 
-    private var task: FeedImageDataLoaderTask?
-    private let model: FeedImage
-    private let imageLoader: FeedImageDataLoader
+    private let viewModel: FeedImageViewModel
 
     // MARK: Lifecycle
 
-    init(model: FeedImage, imageLoader: FeedImageDataLoader) {
-        self.model = model
-        self.imageLoader = imageLoader
-    }
-
-    func cancelLoad() {
-        task?.cancel()
+    init(viewModel: FeedImageViewModel) {
+        self.viewModel = viewModel
     }
 
     // MARK: Functions
 
     func view() -> UITableViewCell {
-        let cell = FeedImageCell()
-        cell.locationContainer.isHidden = (model.location == nil)
-        cell.locationLabel.text = model.location
-        cell.descriptionLabel.text = model.description
-        cell.feedImageView.image = nil
-        cell.feedImageRetryButton.isHidden = true
-        cell.feedImageContainer.startShimmering()
-
-        let loadImage = { [weak self, weak cell] in
-            guard let self = self else { return }
-
-            self.task = self.imageLoader.loadImageData(from: self.model.url) { [weak cell] result in
-                let data = try? result.get()
-                let image = data.map(UIImage.init) ?? nil
-                cell?.feedImageView.image = image
-                cell?.feedImageRetryButton.isHidden = (image != nil)
-                cell?.feedImageContainer.stopShimmering()
-            }
-        }
-
-        cell.onRetry = loadImage
-        loadImage()
-
+        let cell = binded(FeedImageCell())
+        viewModel.loadImageData()
         return cell
     }
 
     func preload() {
-        task = imageLoader.loadImageData(from: model.url) { _ in }
+        viewModel.loadImageData()
     }
 
+    func cancelLoad() {
+        viewModel.cancelImageDataLoad()
+    }
+
+    private func binded(_ cell: FeedImageCell) -> FeedImageCell {
+        cell.locationContainer.isHidden = !viewModel.hasLocation
+        cell.locationLabel.text = viewModel.location
+        cell.descriptionLabel.text = viewModel.description
+        cell.onRetry = viewModel.loadImageData
+
+        viewModel.onImageLoad = { [weak cell] image in
+            cell?.feedImageView.image = image
+        }
+
+        viewModel.onImageLoadingStateChange = { [weak cell] isLoading in
+            cell?.feedImageContainer.isShimmering = isLoading
+        }
+
+        viewModel.onShouldRetryImageLoadStateChange = { [weak cell] shouldRetry in
+            cell?.feedImageRetryButton.isHidden = !shouldRetry
+        }
+
+        return cell
+    }
 }
