@@ -12,11 +12,11 @@ final class FeedImageCellController {
 
     // MARK: Properties
 
-    private let viewModel: FeedImageViewModel
+    private let viewModel: FeedImageViewModel<UIImage>
 
     // MARK: Lifecycle
 
-    init(viewModel: FeedImageViewModel) {
+    init(viewModel: FeedImageViewModel<UIImage>) {
         self.viewModel = viewModel
     }
 
