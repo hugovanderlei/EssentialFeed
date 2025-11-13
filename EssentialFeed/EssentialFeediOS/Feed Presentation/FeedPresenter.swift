@@ -36,32 +36,20 @@ protocol FeedView {
 
 final class FeedPresenter {
 
-    // MARK: Nested Types
-
-    typealias Observer<T> = (T) -> Void
-
-    // MARK: Properties
 
     var feedView: FeedView?
     var loadingView: FeedLoadingView?
 
-    private let feedLoader: FeedLoader
-
-    // MARK: Lifecycle
-
-    init(feedLoader: FeedLoader) {
-        self.feedLoader = feedLoader
+    func didStartLoadingFeed() {
+        loadingView?.display(FeedLoadingViewModel(isLoading: true))
     }
 
-    // MARK: Functions
+    func didFinishLoadingFeed(with feed: [FeedImage]) {
+        feedView?.display(FeedViewModel(feed: feed))
+        loadingView?.display(FeedLoadingViewModel(isLoading: false))
+    }
 
-    func loadFeed() {
-        loadingView?.display(FeedLoadingViewModel(isLoading: true))
-        feedLoader.load { [weak self] result in
-            if let feed = try? result.get() {
-                self?.feedView?.display(FeedViewModel(feed: feed))
-            }
-            self?.loadingView?.display(FeedLoadingViewModel(isLoading: false))
-        }
+    func didFinishLoadingFeed(with error: Error) {
+        loadingView?.display(FeedLoadingViewModel(isLoading: false))
     }
 }
