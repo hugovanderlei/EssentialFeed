@@ -8,18 +8,6 @@
 
 import EssentialFeed
 
-// MARK: - FeedLoadingViewModel
-
-struct FeedLoadingViewModel {
-    let isLoading: Bool
-}
-
-// MARK: - FeedViewModel
-
-struct FeedViewModel {
-    let feed: [FeedImage]
-}
-
 // MARK: - FeedLoadingView
 
 protocol FeedLoadingView {
