@@ -32,11 +32,6 @@ public final class FeedViewController: UITableViewController, UITableViewDataSou
         refreshController?.refresh()
     }
 
-    convenience init(refreshController: FeedRefreshViewController) {
-        self.init()
-        self.refreshController = refreshController
-    }
-
     // MARK: Overridden Functions
 
     override public func viewIsAppearing(_ animated: Bool) {
