@@ -20,15 +20,13 @@ final class FeedRefreshViewController: NSObject, FeedLoadingView {
 
     // MARK: Properties
 
-    lazy var view = loadView()
+//    lazy var view = loadView()
 
-    private let delegate: FeedRefreshViewControllerDelegate
+    @IBOutlet var view: UIRefreshControl?
+
+    var delegate: FeedRefreshViewControllerDelegate?
 
     // MARK: Lifecycle
-
-    init(delegate: FeedRefreshViewControllerDelegate) {
-        self.delegate = delegate
-    }
 
     private func loadView() -> UIRefreshControl {
         let view = UIRefreshControl()
@@ -38,16 +36,16 @@ final class FeedRefreshViewController: NSObject, FeedLoadingView {
 
     // MARK: Functions
 
-    func display(_ viewModel: FeedLoadingViewModel) {
-        if viewModel.isLoading {
-            view.beginRefreshing()
-        } else {
-            view.endRefreshing()
-        }
+    @IBAction func refresh() {
+        delegate?.didRequestFeedRefresh()
     }
 
-    @objc func refresh() {
-        delegate.didRequestFeedRefresh()
+    func display(_ viewModel: FeedLoadingViewModel) {
+        if viewModel.isLoading {
+            view?.beginRefreshing()
+        } else {
+            view?.endRefreshing()
+        }
     }
 
 }

@@ -14,7 +14,7 @@ public final class FeedViewController: UITableViewController, UITableViewDataSou
 
     // MARK: Properties
 
-    var refreshController: FeedRefreshViewController?
+    @IBOutlet var refreshController: FeedRefreshViewController?
 
     var tableModel = [FeedImageCellController]() {
         didSet { tableView.reloadData() }
