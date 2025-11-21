@@ -32,10 +32,7 @@ public final class FeedViewController: UITableViewController, UITableViewDataSou
 
     override public func viewDidLoad() {
         super.viewDidLoad()
-
-        tableView.prefetchDataSource = self
         refresh()
-
     }
 
     // MARK: Overridden Functions
@@ -44,7 +41,6 @@ public final class FeedViewController: UITableViewController, UITableViewDataSou
         super.viewIsAppearing(animated)
 
         if !viewAppeared {
-//            refresh()
             refreshControl?.beginRefreshing()
             viewAppeared = true
         }
@@ -73,7 +69,6 @@ public final class FeedViewController: UITableViewController, UITableViewDataSou
     public func tableView(_ tableView: UITableView, cancelPrefetchingForRowsAt indexPaths: [IndexPath]) {
         indexPaths.forEach(cancelCellControllerLoad)
     }
-
 
     func display(_ viewModel: FeedLoadingViewModel) {
         if viewModel.isLoading {
