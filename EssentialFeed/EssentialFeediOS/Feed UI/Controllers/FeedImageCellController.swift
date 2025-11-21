@@ -36,6 +36,11 @@ final class FeedImageCellController: FeedImageView {
     func view(in tableView: UITableView) -> UITableViewCell {
         cell = tableView.dequeueReusableCell()
         delegate.didRequestImage()
+
+        cell?.onReuse = { [weak self] in
+            self?.releaseCellForReuse()
+        }
+
         return cell!
     }
 
@@ -59,6 +64,7 @@ final class FeedImageCellController: FeedImageView {
     }
 
     private func releaseCellForReuse() {
+        cell?.onReuse = nil
         cell = nil
     }
 
