@@ -173,6 +173,7 @@
 				"Feed UI/Views/Feed.storyboard",
 				"Feed UI/Views/Feed.xcassets",
 				"Feed UI/Views/FeedImageCell.swift",
+				"Feed UI/Views/UIImageView+Animations.swift",
 				"Feed UI/Views/UITableView+Dequeueing.swift",
 				"Feed UI/Views/UIView+Shimmering.swift",
 			);
