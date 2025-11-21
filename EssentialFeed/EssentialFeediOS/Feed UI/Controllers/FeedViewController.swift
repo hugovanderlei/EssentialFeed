@@ -8,13 +8,19 @@
 
 import UIKit
 
+// MARK: - FeedViewControllerDelegate
+
+protocol FeedViewControllerDelegate {
+    func didRequestFeedRefresh()
+}
+
 // MARK: - FeedViewController
 
-public final class FeedViewController: UITableViewController, UITableViewDataSourcePrefetching {
+public final class FeedViewController: UITableViewController, UITableViewDataSourcePrefetching, FeedLoadingView {
 
     // MARK: Properties
 
-    @IBOutlet var refreshController: FeedRefreshViewController?
+    var delegate: FeedViewControllerDelegate?
 
     var tableModel = [FeedImageCellController]() {
         didSet { tableView.reloadData() }
@@ -28,8 +34,8 @@ public final class FeedViewController: UITableViewController, UITableViewDataSou
         super.viewDidLoad()
 
         tableView.prefetchDataSource = self
-        refreshControl = refreshController?.view
-        refreshController?.refresh()
+        refresh()
+
     }
 
     // MARK: Overridden Functions
@@ -38,7 +44,8 @@ public final class FeedViewController: UITableViewController, UITableViewDataSou
         super.viewIsAppearing(animated)
 
         if !viewAppeared {
-            refresh()
+//            refresh()
+            refreshControl?.beginRefreshing()
             viewAppeared = true
         }
     }
@@ -67,8 +74,17 @@ public final class FeedViewController: UITableViewController, UITableViewDataSou
         indexPaths.forEach(cancelCellControllerLoad)
     }
 
-    func refresh() {
-        refreshControl?.beginRefreshing()
+
+    func display(_ viewModel: FeedLoadingViewModel) {
+        if viewModel.isLoading {
+            refreshControl?.beginRefreshing()
+        } else {
+            refreshControl?.endRefreshing()
+        }
+    }
+
+    @IBAction private func refresh() {
+        delegate?.didRequestFeedRefresh()
     }
 
     private func cellController(forRowAt indexPath: IndexPath) -> FeedImageCellController {
