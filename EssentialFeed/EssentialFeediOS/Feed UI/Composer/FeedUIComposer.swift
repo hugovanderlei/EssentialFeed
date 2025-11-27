@@ -19,7 +19,8 @@ public final class FeedUIComposer {
     // MARK: Static Functions
 
     public static func feedComposedWith(feedLoader: FeedLoader, imageLoader: FeedImageDataLoader) -> FeedViewController {
-        let presentationAdapter = FeedLoaderPresentationAdapter(feedLoader: feedLoader)
+        let presentationAdapter = FeedLoaderPresentationAdapter(feedLoader:
+            MainQueueDispatchDecorator(decoratee: feedLoader))
 
         let feedController = FeedViewController.makeWith(
             delegate: presentationAdapter,
@@ -32,6 +33,35 @@ public final class FeedUIComposer {
         )
 
         return feedController
+    }
+}
+
+// MARK: - MainQueueDispatchDecorator
+
+private final class MainQueueDispatchDecorator: FeedLoader {
+
+    // MARK: Properties
+
+    private let decoratee: FeedLoader
+
+    // MARK: Lifecycle
+
+    init(decoratee: FeedLoader) {
+        self.decoratee = decoratee
+    }
+
+    // MARK: Functions
+
+    func load(completion: @escaping (FeedLoader.Result) -> Void) {
+        decoratee.load { result in
+            if Thread.isMainThread {
+                completion(result)
+            } else {
+                DispatchQueue.main.async {
+                    completion(result)
+                }
+            }
+        }
     }
 }
 
