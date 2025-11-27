@@ -15,10 +15,13 @@ final class FeedViewControllerTests: XCTestCase {
         let (sut, _) = makeSUT()
 
         sut.loadViewIfNeeded()
+        let bundle = Bundle(for: FeedViewController.self)
+        let localizedKey = "FEED_VIEW_TITLE"
+        let localizedTitle = bundle.localizedString(forKey: localizedKey, value: nil, table: "Feed")
 
-        XCTAssertEqual(sut.title, "My Feed")
+        XCTAssertNotEqual(localizedKey, localizedTitle, "Missing localized string for key: \(localizedKey)")
+        XCTAssertEqual(sut.title, localizedTitle)
     }
-    
 
     func test_loadFeedActions_requestFeedFromLoader() {
         let (sut, loader) = makeSUT()
@@ -248,21 +251,21 @@ final class FeedViewControllerTests: XCTestCase {
 
         XCTAssertEqual(view0.renderedImage, .none, "Expected no image state change for reused view once image loading completes successfully")
     }
-    
+
     func test_feedImageView_showsDataForNewViewRequestAfterPreviousViewIsReused() throws {
         let (sut, loader) = makeSUT()
-        
+
         sut.simulateAppearance()
         loader.completeFeedLoading(with: [makeImage(), makeImage()])
-        
+
         let previousView = try XCTUnwrap(sut.simulateFeedImageViewNotVisible(at: 0))
 
         let newView = try XCTUnwrap(sut.simulateFeedImageViewVisible(at: 0))
         previousView.prepareForReuse()
-        
+
         let imageData = UIImage.make(withColor: .red).pngData()!
         loader.completeImageLoading(with: imageData, at: 1)
-        
+
         XCTAssertEqual(newView.renderedImage, imageData)
     }
 
