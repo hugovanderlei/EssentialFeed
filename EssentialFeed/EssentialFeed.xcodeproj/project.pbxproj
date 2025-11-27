@@ -168,6 +168,8 @@
 				"Feed Presentation/FeedLoadingViewModel.swift",
 				"Feed Presentation/FeedPresenter.swift",
 				"Feed Presentation/FeedViewModel.swift",
+				"Feed UI/Composer/FeedImageDataLoaderPresentationAdapter.swift",
+				"Feed UI/Composer/FeedLoaderPresentationAdapter.swift",
 				"Feed UI/Composer/FeedUIComposer.swift",
 				"Feed UI/Composer/MainQueueDispatchDecorator.swift",
 				"Feed UI/Composer/WeakRefVirtualProxy.swift",
