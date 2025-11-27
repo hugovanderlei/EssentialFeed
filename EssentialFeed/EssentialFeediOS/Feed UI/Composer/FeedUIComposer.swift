@@ -38,31 +38,40 @@ public final class FeedUIComposer {
 
 // MARK: - MainQueueDispatchDecorator
 
-private final class MainQueueDispatchDecorator: FeedLoader {
+private final class MainQueueDispatchDecorator<T> {
 
     // MARK: Properties
 
-    private let decoratee: FeedLoader
+    private let decoratee: T
 
     // MARK: Lifecycle
 
-    init(decoratee: FeedLoader) {
+    init(decoratee: T) {
         self.decoratee = decoratee
     }
 
     // MARK: Functions
 
+    func dispatch(completion: @escaping () -> Void) {
+        guard Thread.isMainThread else {
+            return DispatchQueue.main.async(execute: completion)
+        }
+
+        completion()
+    }
+
+}
+
+// MARK: FeedLoader
+
+extension MainQueueDispatchDecorator: FeedLoader where T == FeedLoader {
+
     func load(completion: @escaping (FeedLoader.Result) -> Void) {
-        decoratee.load { result in
-            if Thread.isMainThread {
-                completion(result)
-            } else {
-                DispatchQueue.main.async {
-                    completion(result)
-                }
-            }
+        decoratee.load { [weak self] result in
+            self?.dispatch { completion(result) }
         }
     }
+
 }
 
 private extension FeedViewController {
