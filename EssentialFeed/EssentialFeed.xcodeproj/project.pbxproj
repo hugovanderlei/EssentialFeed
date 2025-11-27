@@ -171,6 +171,7 @@
 				"Feed UI/Composer/FeedImageDataLoaderPresentationAdapter.swift",
 				"Feed UI/Composer/FeedLoaderPresentationAdapter.swift",
 				"Feed UI/Composer/FeedUIComposer.swift",
+				"Feed UI/Composer/FeedViewAdapter.swift",
 				"Feed UI/Composer/MainQueueDispatchDecorator.swift",
 				"Feed UI/Composer/WeakRefVirtualProxy.swift",
 				"Feed UI/Controllers/FeedImageCellController.swift",
