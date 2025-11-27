@@ -606,6 +606,7 @@
 				en,
 				Base,
 				"pt-BR",
+				el,
 			);
 			mainGroup = 080EDEE721B6DA7E00813479;
 			preferredProjectObjectVersion = 50;
