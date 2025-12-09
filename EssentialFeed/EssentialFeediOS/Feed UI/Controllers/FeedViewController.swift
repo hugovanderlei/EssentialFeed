@@ -16,9 +16,11 @@ protocol FeedViewControllerDelegate {
 
 // MARK: - FeedViewController
 
-public final class FeedViewController: UITableViewController, UITableViewDataSourcePrefetching, FeedLoadingView {
+public final class FeedViewController: UITableViewController, UITableViewDataSourcePrefetching, FeedLoadingView, FeedErrorView {
 
     // MARK: Properties
+
+    @IBOutlet public private(set) var errorView: ErrorView?
 
     var delegate: FeedViewControllerDelegate?
 
@@ -72,12 +74,12 @@ public final class FeedViewController: UITableViewController, UITableViewDataSou
         indexPaths.forEach(cancelCellControllerLoad)
     }
 
+    func display(_ viewModel: FeedErrorViewModel) {
+        errorView?.message = viewModel.message
+    }
+
     func display(_ viewModel: FeedLoadingViewModel) {
-        if viewModel.isLoading {
-            refreshControl?.beginRefreshing()
-        } else {
-            refreshControl?.endRefreshing()
-        }
+        refreshControl?.update(isRefreshing: viewModel.isLoading)
     }
 
     @IBAction private func refresh() {

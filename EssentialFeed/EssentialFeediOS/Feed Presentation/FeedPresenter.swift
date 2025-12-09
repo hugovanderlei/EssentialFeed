@@ -9,6 +9,12 @@
 import EssentialFeed
 import Foundation
 
+
+
+protocol FeedErrorView {
+    func display(_ viewModel: FeedErrorViewModel)
+}
+
 // MARK: - FeedLoadingView
 
 protocol FeedLoadingView {
@@ -35,22 +41,34 @@ final class FeedPresenter {
             comment: "Title for the feed view"
         )
     }
+    
+    private var feedLoadError: String {
+        return NSLocalizedString("FEED_VIEW_CONNECTION_ERROR",
+             tableName: "Feed",
+             bundle: Bundle(for: FeedPresenter.self),
+             comment: "Error message displayed when we can't load the image feed from the server")
+    }
+
 
     // MARK: Properties
 
     private let feedView: FeedView
     private let loadingView: FeedLoadingView
+    private let errorView: FeedErrorView
+
 
     // MARK: Lifecycle
 
-    init(feedView: FeedView, loadingView: FeedLoadingView) {
+    init(feedView: FeedView, loadingView: FeedLoadingView, errorView: FeedErrorView) {
         self.feedView = feedView
         self.loadingView = loadingView
+        self.errorView = errorView
     }
 
     // MARK: Functions
 
     func didStartLoadingFeed() {
+        errorView.display(.noError)
         loadingView.display(FeedLoadingViewModel(isLoading: true))
     }
 
@@ -60,6 +78,7 @@ final class FeedPresenter {
     }
 
     func didFinishLoadingFeed(with error: Error) {
+        errorView.display(.error(message: feedLoadError))
         loadingView.display(FeedLoadingViewModel(isLoading: false))
     }
 }
