@@ -10,5 +10,23 @@ import UIKit
 // MARK: - ErrorView
 
 public final class ErrorView: UIView {
-    public var message: String?
+
+    // MARK: Properties
+
+    @IBOutlet private var label: UILabel!
+
+    // MARK: Computed Properties
+
+    public var message: String? {
+        get { return label.text }
+        set { label.text = newValue }
+    }
+
+    // MARK: Overridden Functions
+
+    override public func awakeFromNib() {
+        super.awakeFromNib()
+
+        label.text = nil
+    }
 }
