@@ -182,6 +182,7 @@
 				"Feed UI/Views/Feed.xcassets",
 				"Feed UI/Views/FeedImageCell.swift",
 				"Feed UI/Views/Helpers/UIImageView+Animations.swift",
+				"Feed UI/Views/Helpers/UIRefreshControl+Helpers.swift",
 				"Feed UI/Views/Helpers/UITableView+Dequeueing.swift",
 				"Feed UI/Views/Helpers/UIView+Shimmering.swift",
 			);
