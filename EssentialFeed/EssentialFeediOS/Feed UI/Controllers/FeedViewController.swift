@@ -14,19 +14,13 @@ protocol FeedViewControllerDelegate {
     func didRequestFeedRefresh()
 }
 
-// MARK: - ErrorView
-
-public final class ErrorView: UIView {
-    public var message: String?
-}
-
 // MARK: - FeedViewController
 
 public final class FeedViewController: UITableViewController, UITableViewDataSourcePrefetching, FeedLoadingView, FeedErrorView {
 
     // MARK: Properties
-    @IBOutlet private(set) public var errorView: ErrorView?
 
+    @IBOutlet public private(set) var errorView: ErrorView?
 
     var delegate: FeedViewControllerDelegate?
 
@@ -55,10 +49,6 @@ public final class FeedViewController: UITableViewController, UITableViewDataSou
             viewAppeared = true
         }
     }
-    
-    func display(_ viewModel: FeedErrorViewModel) {
-        errorView?.message = viewModel.message
-    }
 
     override public func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return tableModel.count
@@ -82,6 +72,10 @@ public final class FeedViewController: UITableViewController, UITableViewDataSou
 
     public func tableView(_ tableView: UITableView, cancelPrefetchingForRowsAt indexPaths: [IndexPath]) {
         indexPaths.forEach(cancelCellControllerLoad)
+    }
+
+    func display(_ viewModel: FeedErrorViewModel) {
+        errorView?.message = viewModel.message
     }
 
     func display(_ viewModel: FeedLoadingViewModel) {

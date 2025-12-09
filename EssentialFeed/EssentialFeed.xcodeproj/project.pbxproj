@@ -176,6 +176,7 @@
 				"Feed UI/Composer/WeakRefVirtualProxy.swift",
 				"Feed UI/Controllers/FeedImageCellController.swift",
 				"Feed UI/Controllers/FeedViewController.swift",
+				"Feed UI/Views/ErrorView.swift",
 				"Feed UI/Views/Feed.storyboard",
 				"Feed UI/Views/Feed.xcassets",
 				"Feed UI/Views/FeedImageCell.swift",
