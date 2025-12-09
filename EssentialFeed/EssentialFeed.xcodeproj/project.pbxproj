@@ -163,6 +163,7 @@
 			membershipExceptions = (
 				"/Localized/Feed Presentation/Feed.strings",
 				"Feed Image Loader/FeedImageDataLoader.swift",
+				"Feed Presentation/FeedErrorViewModel.swift",
 				"Feed Presentation/FeedImagePresenter.swift",
 				"Feed Presentation/FeedImageViewModel.swift",
 				"Feed Presentation/FeedLoadingViewModel.swift",
