@@ -180,9 +180,9 @@
 				"Feed UI/Views/Feed.storyboard",
 				"Feed UI/Views/Feed.xcassets",
 				"Feed UI/Views/FeedImageCell.swift",
-				"Feed UI/Views/UIImageView+Animations.swift",
-				"Feed UI/Views/UITableView+Dequeueing.swift",
-				"Feed UI/Views/UIView+Shimmering.swift",
+				"Feed UI/Views/Helpers/UIImageView+Animations.swift",
+				"Feed UI/Views/Helpers/UITableView+Dequeueing.swift",
+				"Feed UI/Views/Helpers/UIView+Shimmering.swift",
 			);
 			target = 18D5DD1E2EA28F5500F0D19D /* EssentialFeediOSTests */;
 		};
