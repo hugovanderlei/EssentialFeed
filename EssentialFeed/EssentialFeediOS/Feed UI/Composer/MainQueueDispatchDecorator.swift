@@ -8,7 +8,6 @@
 
 import EssentialFeed
 import Foundation
-
 // MARK: - MainQueueDispatchDecorator
 
 final class MainQueueDispatchDecorator<T> {

@@ -3,7 +3,7 @@
 	archiveVersion = 1;
 	classes = {
 	};
-	objectVersion = 76;
+	objectVersion = 70;
 	objects = {
 
 /* Begin PBXBuildFile section */
@@ -175,14 +175,9 @@
 		180ABF8B2EB4FB980022D7BA /* PBXFileSystemSynchronizedBuildFileExceptionSet */ = {
 			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
 			membershipExceptions = (
-				"/Localized/Feed Presentation/Feed.strings",
 				"Feed Image Loader/FeedImageDataLoader.swift",
-				"Feed Presentation/FeedErrorViewModel.swift",
 				"Feed Presentation/FeedImagePresenter.swift",
 				"Feed Presentation/FeedImageViewModel.swift",
-				"Feed Presentation/FeedLoadingViewModel.swift",
-				"Feed Presentation/FeedPresenter.swift",
-				"Feed Presentation/FeedViewModel.swift",
 				"Feed UI/Composer/FeedImageDataLoaderPresentationAdapter.swift",
 				"Feed UI/Composer/FeedLoaderPresentationAdapter.swift",
 				"Feed UI/Composer/FeedUIComposer.swift",
@@ -644,6 +639,7 @@
 				};
 			};
 			buildConfigurationList = 080EDEEB21B6DA7E00813479 /* Build configuration list for PBXProject "EssentialFeed" */;
+			compatibilityVersion = "Xcode 9.3";
 			developmentRegion = en;
 			hasScannedForEncodings = 0;
 			knownRegions = (
@@ -653,7 +649,6 @@
 				el,
 			);
 			mainGroup = 080EDEE721B6DA7E00813479;
-			preferredProjectObjectVersion = 50;
 			productRefGroup = 080EDEF221B6DA7E00813479 /* Products */;
 			projectDirPath = "";
 			projectRoot = "";
