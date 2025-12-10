@@ -76,23 +76,23 @@ final class FeedPresenterTests: XCTestCase {
 
         // MARK: Nested Types
 
-        enum Message: Equatable {
+        enum Message: Hashable {
             case display(errorMessage: String?)
             case display(isLoading: Bool)
         }
 
         // MARK: Properties
 
-        private(set) var messages = [Message]()
+        private(set) var messages = Set<Message>()
 
         // MARK: Functions
 
         func display(_ viewModel: FeedErrorViewModel) {
-            messages.append(.display(errorMessage: viewModel.message))
+            messages.insert(.display(errorMessage: viewModel.message))
         }
 
         func display(_ viewModel: FeedLoadingViewModel) {
-            messages.append(.display(isLoading: viewModel.isLoading))
+            messages.insert(.display(isLoading: viewModel.isLoading))
         }
     }
 
