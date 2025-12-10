@@ -15,12 +15,6 @@ public protocol FeedView {
     func display(_ viewModel: FeedViewModel)
 }
 
-// MARK: - FeedLoadingViewModel
-
-public struct FeedLoadingViewModel {
-    public let isLoading: Bool
-}
-
 // MARK: - FeedLoadingView
 
 public protocol FeedLoadingView {
