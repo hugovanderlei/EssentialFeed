@@ -4,7 +4,7 @@
 
 import Foundation
 
-public struct FeedImage: Equatable {
+public struct FeedImage: Hashable {
 
     // MARK: Properties
 
