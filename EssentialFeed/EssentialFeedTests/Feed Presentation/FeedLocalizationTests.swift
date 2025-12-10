@@ -6,9 +6,8 @@
 //  Copyright © 2025 Essential Developer. All rights reserved.
 //
 
-@testable import EssentialFeediOS
-import XCTest
 import EssentialFeed
+import XCTest
 
 final class FeedLocalizationTests: XCTestCase {
 
