@@ -8,11 +8,6 @@
 
 import Foundation
 
-// MARK: - FeedViewModel
-
-public struct FeedViewModel {
-    public let feed: [FeedImage]
-}
 
 // MARK: - FeedView
 
