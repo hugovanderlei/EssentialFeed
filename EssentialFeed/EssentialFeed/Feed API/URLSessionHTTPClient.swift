@@ -29,7 +29,7 @@ public final class URLSessionHTTPClient: HTTPClient {
 
     // MARK: Lifecycle
 
-    public init(session: URLSession = .shared) {
+    public init(session: URLSession) {
         self.session = session
     }
 
