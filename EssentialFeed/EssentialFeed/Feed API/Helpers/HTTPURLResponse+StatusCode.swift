@@ -1,0 +1,17 @@
+//
+//  HTTPURLResponse+StatusCode.swift
+//  EssentialFeed
+//
+//  Created by Hugo Vanderlei on 11/12/25.
+//  Copyright © 2025 Essential Developer. All rights reserved.
+//
+
+import Foundation
+
+extension HTTPURLResponse {
+    private static var OK_200: Int { return 200 }
+
+    var isOK: Bool {
+        return statusCode == HTTPURLResponse.OK_200
+    }
+}
