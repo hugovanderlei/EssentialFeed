@@ -21,6 +21,7 @@ class LocalFeedImageDataLoaderTests: XCTestCase {
 
         enum Message: Equatable {
             case retrieve(dataFor: URL)
+            case insert(data: Data, for: URL)
         }
 
         // MARK: Properties
@@ -30,6 +31,10 @@ class LocalFeedImageDataLoaderTests: XCTestCase {
         private var completions = [(FeedImageDataStore.Result) -> Void]()
 
         // MARK: Functions
+
+        func insert(_ data: Data, for url: URL, completion: @escaping (FeedImageDataStore.InsertionResult) -> Void) {
+            receivedMessages.append(.insert(data: data, for: url))
+        }
 
         func retrieve(dataForURL url: URL, completion: @escaping (FeedImageDataStore.Result) -> Void) {
             receivedMessages.append(.retrieve(dataFor: url))
@@ -114,6 +119,16 @@ class LocalFeedImageDataLoaderTests: XCTestCase {
         store.complete(with: anyData())
 
         XCTAssertTrue(received.isEmpty, "Expected no received results after instance has been deallocated")
+    }
+
+    func test_saveImageDataForURL_requestsImageDataInsertionForURL() {
+        let (sut, store) = makeSUT()
+        let url = anyURL()
+        let data = anyData()
+
+        sut.save(data, for: url) { _ in }
+
+        XCTAssertEqual(store.receivedMessages, [.insert(data: data, for: url)])
     }
 
     // MARK: - Helpers
