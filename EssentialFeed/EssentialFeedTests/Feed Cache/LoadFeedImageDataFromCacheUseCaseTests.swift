@@ -11,7 +11,7 @@
 import EssentialFeed
 import XCTest
 
-class LocalFeedImageDataLoaderTests: XCTestCase {
+class LoadFeedImageDataFromCacheUseCaseTests: XCTestCase {
 
     // MARK: Nested Types
 
