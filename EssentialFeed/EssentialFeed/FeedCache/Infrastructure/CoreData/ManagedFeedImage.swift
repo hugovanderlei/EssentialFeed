@@ -20,6 +20,7 @@ class ManagedFeedImage: NSManagedObject {
     @NSManaged var location: String?
     @NSManaged var url: URL
     @NSManaged var cache: ManagedCache
+    @NSManaged var data: Data?
 
     // MARK: Computed Properties
 
