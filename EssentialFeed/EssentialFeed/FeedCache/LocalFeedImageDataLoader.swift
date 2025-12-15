@@ -27,7 +27,9 @@ public extension LocalFeedImageDataLoader {
     typealias SaveResult = Result<Void, Error>
 
     func save(_ data: Data, for url: URL, completion: @escaping (SaveResult) -> Void) {
-        store.insert(data, for: url) { _ in }
+        store.insert(data, for: url) { result in
+            completion(.failure(SaveError.failed))
+        }
     }
 }
 
@@ -39,6 +41,10 @@ extension LocalFeedImageDataLoader: FeedImageDataLoader {
     public enum LoadError: Error {
         case failed
         case notFound
+    }
+
+    public enum SaveError: Error {
+        case failed
     }
 
     private final class LoadImageDataTask: FeedImageDataLoaderTask {
@@ -81,4 +87,5 @@ extension LocalFeedImageDataLoader: FeedImageDataLoader {
         }
         return task
     }
+
 }
