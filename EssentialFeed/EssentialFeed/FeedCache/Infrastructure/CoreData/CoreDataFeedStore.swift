@@ -20,11 +20,13 @@ public final class CoreDataFeedStore {
 
     // MARK: Lifecycle
 
-    public init(storeURL: URL, bundle: Bundle = .main) throws {
+    public init(storeURL: URL) throws {
+        let bundle = Bundle(for: CoreDataFeedStore.self)
         container = try NSPersistentContainer.load(modelName: "FeedStore", url: storeURL, in: bundle)
         context = container.newBackgroundContext()
     }
 
+    // MARK: Functions
 
     func perform(_ action: @escaping (NSManagedObjectContext) -> Void) {
         let context = self.context
