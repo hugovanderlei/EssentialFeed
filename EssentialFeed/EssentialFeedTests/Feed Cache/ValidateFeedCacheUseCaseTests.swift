@@ -23,7 +23,7 @@ final class ValidateFeedCacheUseCaseTests: XCTestCase {
     func test_load_validateCache_deletesCacheOnRetrievalError() {
         let (sut, store) = makeSUT()
 
-        sut.validateCache()
+        sut.validateCache { _ in }
 
         store.completeRetrieval(with: anyNSError())
 
@@ -33,7 +33,7 @@ final class ValidateFeedCacheUseCaseTests: XCTestCase {
     func test_validateCache_doesNotdeletesCacheOnEmptyCache() {
         let (sut, store) = makeSUT()
 
-        sut.validateCache()
+        sut.validateCache { _ in }
         store.completeRetrievalWithEmptyCache()
 
         XCTAssertEqual(store.receivedMessages, [.retrieve])
@@ -47,7 +47,7 @@ final class ValidateFeedCacheUseCaseTests: XCTestCase {
 
         let (sut, store) = makeSUT(currentDate: { fixedCurrentDate })
 
-        sut.validateCache()
+        sut.validateCache { _ in }
         store.completeRetrieval(with: feed.local, timestamp: nonExpiredTimeStamp)
         XCTAssertEqual(store.receivedMessages, [.retrieve])
     }
@@ -60,7 +60,7 @@ final class ValidateFeedCacheUseCaseTests: XCTestCase {
 
         let (sut, store) = makeSUT(currentDate: { fixedCurrentDate })
 
-        sut.validateCache()
+        sut.validateCache { _ in }
         store.completeRetrieval(with: feed.local, timestamp: expirationTimeStamp)
         XCTAssertEqual(store.receivedMessages, [.retrieve, .deleteCahedFeed])
     }
@@ -73,7 +73,7 @@ final class ValidateFeedCacheUseCaseTests: XCTestCase {
 
         let (sut, store) = makeSUT(currentDate: { fixedCurrentDate })
 
-        sut.validateCache()
+        sut.validateCache { _ in }
         store.completeRetrieval(with: feed.local, timestamp: expiredCacheTimeStamp)
         XCTAssertEqual(store.receivedMessages, [.retrieve, .deleteCahedFeed])
     }
@@ -82,7 +82,7 @@ final class ValidateFeedCacheUseCaseTests: XCTestCase {
         let store = FeedStoreSpy()
         var sut: LocalFeedLoader? = LocalFeedLoader(store: store, currentDate: Date.init)
 
-        sut?.validateCache()
+        sut?.validateCache { _ in }
 
         sut = nil
         store.completeRetrieval(with: anyNSError())
