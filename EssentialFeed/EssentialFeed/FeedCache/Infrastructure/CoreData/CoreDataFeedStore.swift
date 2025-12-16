@@ -7,11 +7,20 @@
 //
 
 import CoreData
-import Foundation
-
-// MARK: - CoreDataFeedStore
 
 public final class CoreDataFeedStore {
+
+    // MARK: Nested Types
+
+    enum StoreError: Error {
+        case modelNotFound
+        case failedToLoadPersistentContainer(Error)
+    }
+
+    // MARK: Static Properties
+
+    private static let modelName = "FeedStore"
+    private static let model = NSManagedObjectModel.with(name: modelName, in: Bundle(for: CoreDataFeedStore.self))
 
     // MARK: Properties
 
@@ -21,9 +30,16 @@ public final class CoreDataFeedStore {
     // MARK: Lifecycle
 
     public init(storeURL: URL) throws {
-        let bundle = Bundle(for: CoreDataFeedStore.self)
-        container = try NSPersistentContainer.load(modelName: "FeedStore", url: storeURL, in: bundle)
-        context = container.newBackgroundContext()
+        guard let model = CoreDataFeedStore.model else {
+            throw StoreError.modelNotFound
+        }
+
+        do {
+            container = try NSPersistentContainer.load(name: CoreDataFeedStore.modelName, model: model, url: storeURL)
+            context = container.newBackgroundContext()
+        } catch {
+            throw StoreError.failedToLoadPersistentContainer(error)
+        }
     }
 
     deinit {
@@ -43,4 +59,5 @@ public final class CoreDataFeedStore {
             try? coordinator.persistentStores.forEach(coordinator.remove)
         }
     }
+
 }
