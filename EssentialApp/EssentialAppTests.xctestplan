@@ -1,0 +1,25 @@
+{
+  "configurations" : [
+    {
+      "id" : "2214A148-8882-495D-BA39-DCF42DA1D5C1",
+      "name" : "Test Scheme Action",
+      "options" : {
+
+      }
+    }
+  ],
+  "defaultOptions" : {
+    "performanceAntipatternCheckerEnabled" : true
+  },
+  "testTargets" : [
+    {
+      "parallelizable" : true,
+      "target" : {
+        "containerPath" : "container:EssentialApp.xcodeproj",
+        "identifier" : "18D2B94D2EF1B05F00C4E3D8",
+        "name" : "EssentialAppTests"
+      }
+    }
+  ],
+  "version" : 1
+}
