@@ -13,29 +13,6 @@ import XCTest
 
 class FeedLoaderWithFallbackCompositeTests: XCTestCase {
 
-    // MARK: Nested Types
-
-    private class LoaderStub: FeedLoader {
-
-        // MARK: Properties
-
-        private let result: FeedLoader.Result
-
-        // MARK: Lifecycle
-
-        init(result: FeedLoader.Result) {
-            self.result = result
-        }
-
-        // MARK: Functions
-
-        func load(completion: @escaping (FeedLoader.Result) -> Void) {
-            completion(result)
-        }
-    }
-
-    // MARK: Functions
-
     func test_load_deliversPrimaryFeedOnPrimaryLoaderSuccess() {
         let primaryFeed = uniqueFeed()
         let fallbackFeed = uniqueFeed()
@@ -58,8 +35,8 @@ class FeedLoaderWithFallbackCompositeTests: XCTestCase {
     }
 
     private func makeSUT(primaryResult: FeedLoader.Result, fallbackResult: FeedLoader.Result, file: StaticString = #file, line: UInt = #line) -> FeedLoader {
-        let primaryLoader = LoaderStub(result: primaryResult)
-        let fallbackLoader = LoaderStub(result: fallbackResult)
+        let primaryLoader = FeedLoaderStub(result: primaryResult)
+        let fallbackLoader = FeedLoaderStub(result: fallbackResult)
         let sut = FeedLoaderWithFallbackComposite(primary: primaryLoader, fallback: fallbackLoader)
         trackForMemoryLeaks(primaryLoader, file: file, line: line)
         trackForMemoryLeaks(fallbackLoader, file: file, line: line)
@@ -88,7 +65,6 @@ class FeedLoaderWithFallbackCompositeTests: XCTestCase {
         wait(for: [exp], timeout: 1.0)
     }
 
-    
     private func uniqueFeed() -> [FeedImage] {
         return [FeedImage(id: UUID(), description: "any", location: "any", url: anyURL())]
     }

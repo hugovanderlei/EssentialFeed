@@ -23,39 +23,18 @@ final class FeedLoaderCacheDecorator: FeedLoader {
 
 final class FeedLoaderCacheDecoratorTests: XCTestCase {
 
-    // MARK: Nested Types
-
-    private class LoaderStub: FeedLoader {
-
-        // MARK: Properties
-
-        private let result: FeedLoader.Result
-
-        // MARK: Lifecycle
-
-        init(result: FeedLoader.Result) {
-            self.result = result
-        }
-
-        // MARK: Functions
-
-        func load(completion: @escaping (FeedLoader.Result) -> Void) {
-            completion(result)
-        }
-    }
-
     // MARK: Functions
 
     func test_load_deliversFeedOnLoaderSuccess() {
         let feed = uniqueFeed()
-        let loader = LoaderStub(result: .success(feed))
+        let loader = FeedLoaderStub(result: .success(feed))
         let sut = FeedLoaderCacheDecorator(decoratee: loader)
 
         expect(sut, toCompleteWith: .success(feed))
     }
 
     func test_load_deliversErrorOnLoaderFailure() {
-        let loader = LoaderStub(result: .failure(anyNSError()))
+        let loader = FeedLoaderStub(result: .failure(anyNSError()))
         let sut = FeedLoaderCacheDecorator(decoratee: loader)
 
         expect(sut, toCompleteWith: .failure(anyNSError()))
