@@ -24,10 +24,10 @@ public final class LocalFeedLoader {
     }
 }
 
-public extension LocalFeedLoader {
-    typealias SaveResult = Result<Void, Error>
+ extension LocalFeedLoader: FeedCache {
+    public typealias SaveResult = FeedCache.Result
 
-    func save(_ feed: [FeedImage], completion: @escaping (SaveResult) -> Void) {
+    public func save(_ feed: [FeedImage], completion: @escaping (SaveResult) -> Void) {
         store.deleteCachedFeed { [weak self] deletionResult in
             guard let self = self else { return }
 
