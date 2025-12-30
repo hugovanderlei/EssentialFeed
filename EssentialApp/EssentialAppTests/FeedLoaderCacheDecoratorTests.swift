@@ -7,35 +7,8 @@
 
 import EssentialFeed
 import XCTest
+import EssentialApp
 
-
-// MARK: - FeedLoaderCacheDecorator
-
-final class FeedLoaderCacheDecorator: FeedLoader {
-
-    // MARK: Properties
-
-    private let decoratee: FeedLoader
-    private let cache: FeedCache
-
-    // MARK: Lifecycle
-
-    init(decoratee: FeedLoader, cache: FeedCache) {
-        self.decoratee = decoratee
-        self.cache = cache
-    }
-
-    // MARK: Functions
-
-    func load(completion: @escaping (FeedLoader.Result) -> Void) {
-        decoratee.load { [weak self] result in
-            completion(result.map { feed in
-                self?.cache.save(feed) { _ in }
-                return feed
-            })
-        }
-    }
-}
 
 // MARK: - FeedLoaderCacheDecoratorTests
 
