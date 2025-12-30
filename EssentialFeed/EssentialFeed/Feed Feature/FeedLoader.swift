@@ -4,8 +4,6 @@
 
 import Foundation
 
-
-
 // MARK: - FeedLoader
 
 public protocol FeedLoader {
