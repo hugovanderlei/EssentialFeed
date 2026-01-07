@@ -1,0 +1,24 @@
+{
+  "configurations" : [
+    {
+      "id" : "ED3BB84D-1A0A-47BC-AC6B-BC5BE3E17ABE",
+      "name" : "Test Scheme Action",
+      "options" : {
+
+      }
+    }
+  ],
+  "defaultOptions" : {
+    "performanceAntipatternCheckerEnabled" : true
+  },
+  "testTargets" : [
+    {
+      "target" : {
+        "containerPath" : "container:EssentialApp.xcodeproj",
+        "identifier" : "184503052F0D8D18002379C1",
+        "name" : "EssentialAppUIAcceptenceTests"
+      }
+    }
+  ],
+  "version" : 1
+}
